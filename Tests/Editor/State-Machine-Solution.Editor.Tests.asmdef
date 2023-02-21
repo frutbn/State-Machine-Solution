@@ -1,0 +1,12 @@
+{
+  "name": "State-Machine-Solution.Editor.Tests",
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "references": [
+    "State-Machine-Solution"
+  ]
+}

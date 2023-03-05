@@ -28,12 +28,18 @@ public abstract class BaseObserverStateMachine : IStateMachine
 
         return true;
     }
-
+    
     public T Get<T>() where T : IState
     {
         var stateType = typeof(T);
-        if (!_stateByType.ContainsKey(stateType)) return default;
+        var state = Get(stateType);
+        if (state == default) return default;
         return (T) _stateByType[stateType];
+    }
+    
+    public IState Get(Type stateType)
+    {
+        return !_stateByType.ContainsKey(stateType) ? default : _stateByType[stateType];
     }
 
     public bool TryAdd<T>(T state) where T : IState

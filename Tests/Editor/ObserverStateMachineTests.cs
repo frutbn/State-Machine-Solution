@@ -50,7 +50,7 @@ public sealed class ObserverStateMachineTests
         Assert.AreEqual(typeof(TestState2), _stateMachine.Current.GetType());
     }
     
-    private sealed class TestStateMachine : BaseObserverStateMachine
+    private sealed class TestStateMachine : ObserverStateMachine
     {
     }
     
@@ -75,9 +75,9 @@ public sealed class ObserverStateMachineTests
     
     private sealed class TestState1 : BaseTestState
     {
-        private BaseObserverStateMachine _stateMachine;
+        private ObserverStateMachine _stateMachine;
         
-        public TestState1(BaseObserverStateMachine stateMachine)
+        public TestState1(ObserverStateMachine stateMachine)
         {
             _stateMachine = stateMachine;
             stateMachine.AddTriggerListener<DoSomethingTrigger>(this, DoSomething);

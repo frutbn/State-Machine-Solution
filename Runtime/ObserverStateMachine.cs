@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public abstract class BaseObserverStateMachine : IStateMachine
+public class ObserverStateMachine : IStateMachine
 {
     private readonly Dictionary<Type, IState> _stateByType = new();
     private readonly Dictionary<(Type state, Type trigger), object> _triggerEventsByTypes = new();

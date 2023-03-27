@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public abstract class BaseScriptableStateMachine<T> : ScriptableObject, IStateMachine where T : IStateMachine, new()
+public abstract class BaseMonoStateMachine<T> : MonoBehaviour, IStateMachine where T : class, IStateMachine
 {
-    public T Instance { get; } = new();
-    
+    public T Instance => this as T;
+
     public bool TryChangeTo(IState state)
     {
         return Instance.TryChangeTo(state);

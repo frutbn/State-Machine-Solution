@@ -61,13 +61,13 @@ public class ObserverStateMachine : IStateMachine
     public void SetTrigger<T>(T trigger) where T : ITrigger
     {
         var stateType = Current.GetType();
-        var triggerType = typeof(T);
+        var triggerType = trigger.GetType();
 
         var triggerEventFilter = (stateType, triggerType);
         if (!_triggerEventsByTypes.ContainsKey(triggerEventFilter)) return;
 
-        var action = _triggerEventsByTypes[triggerEventFilter] as Action<T>;
-        action?.Invoke(trigger);
+        var action = _triggerEventsByTypes[triggerEventFilter] as Delegate;
+        action?.DynamicInvoke(trigger);
     }
 
     public void AddTriggerListener<T>(IState state, Action<T> trigger) where T : ITrigger

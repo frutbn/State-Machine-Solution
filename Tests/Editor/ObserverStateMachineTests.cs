@@ -80,7 +80,7 @@ public sealed class ObserverStateMachineTests
         public TestState1(ObserverStateMachine stateMachine)
         {
             _stateMachine = stateMachine;
-            stateMachine.AddTriggerListener<DoSomethingTrigger>(this, DoSomething);
+            stateMachine.AddTriggerListener<DoSomethingTrigger>(DoSomething, this);
         }
         
         private void DoSomething(DoSomethingTrigger trigger)

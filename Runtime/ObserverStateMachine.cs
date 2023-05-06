@@ -13,14 +13,14 @@ public class ObserverStateMachine : IStateMachine
     {
         Current?.OnUpdate();
     }
-    
+
     public bool TryChangeTo(IState state)
     {
         var stateType = state.GetType();
-        
+
         if (Current == state) return false;
         if (!_stateByType.ContainsKey(stateType)) return false;
-        
+
         Current?.OnExit();
         Previous = Current;
         Current = state;
@@ -28,7 +28,7 @@ public class ObserverStateMachine : IStateMachine
 
         return true;
     }
-    
+
     public T Get<T>() where T : IState
     {
         var stateType = typeof(T);
@@ -36,7 +36,7 @@ public class ObserverStateMachine : IStateMachine
         if (state == default) return default;
         return (T) _stateByType[stateType];
     }
-    
+
     public IState Get(Type stateType)
     {
         return !_stateByType.ContainsKey(stateType) ? default : _stateByType[stateType];
@@ -70,22 +70,26 @@ public class ObserverStateMachine : IStateMachine
         action?.DynamicInvoke(trigger);
     }
 
-    public void AddTriggerListener<T>(IState state, Action<T> trigger) where T : ITrigger
+    public void AddTriggerListener<T>(Action<T> trigger, params IState[] states) where T : ITrigger
     {
-        var stateType = state.GetType();
         var triggerType = typeof(T);
-        
-        var triggerEventFilter = (stateType, triggerType);
-        if (_triggerEventsByTypes.ContainsKey(triggerEventFilter)) return;
-        _triggerEventsByTypes.Add(triggerEventFilter, trigger);
+        foreach (var state in states)
+        {
+            var stateType = state.GetType();
+            var triggerEventFilter = (stateType, triggerType);
+            if (_triggerEventsByTypes.ContainsKey(triggerEventFilter)) return;
+            _triggerEventsByTypes.Add(triggerEventFilter, trigger);
+        }
     }
-    
-    public void RemoveTriggerListener<T>(IState state) where T : ITrigger
+
+    public void RemoveTriggerListener<T>(params IState[] states) where T : ITrigger
     {
-        var stateType = state.GetType();
         var triggerType = typeof(T);
-        
-        var triggerEventFilter = (stateType, triggerType);
-        _triggerEventsByTypes.Remove(triggerEventFilter);
+        foreach (var state in states)
+        {
+            var stateType = state.GetType();
+            var triggerEventFilter = (stateType, triggerType);
+            _triggerEventsByTypes.Remove(triggerEventFilter);
+        }
     }
 }
